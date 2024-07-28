@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.dto.request.HitCreateDto;
 import ru.practicum.explorewithme.dto.request.StatsRequestFilter;
 import ru.practicum.explorewithme.dto.response.StatsView;
@@ -19,6 +20,7 @@ public class StatsServiceImpl implements StatsService {
     private final HitMapper hitMapper;
 
     @Override
+    @Transactional
     public void createHit(HitCreateDto hitCreateDto) {
         statsRepository.save(hitMapper.convert(hitCreateDto));
     }

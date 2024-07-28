@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.explorewithme.client.StatsClient;
 import ru.practicum.explorewithme.dto.request.HitCreateDto;
@@ -22,9 +23,8 @@ public class StatsClientImpl extends RestTemplate implements StatsClient {
     private String statsServiceUrl;
 
     @Override
+    @Transactional
     public void saveHit(HttpServletRequest request, String appName) {
-        // Не понимаю этого требования. Если дата передается между сервисами, без участия человека,
-        // то для чего эти заморочки с форматом даты?
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String ip = request.getRemoteAddr();
         String uri = request.getRequestURI();

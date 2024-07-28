@@ -52,7 +52,7 @@ public class EventsController {
             @RequestParam @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}",
                     message = "Дата в параметре end должна быть в формате yyyy-MM-dd HH:mm:ss")String end,
             @RequestParam(required = false) List<String> uris,
-            @RequestParam(required = false, defaultValue = "false") Boolean unique
+            @RequestParam(defaultValue = "false") Boolean unique
     ) {
         return statsClient.getStats(start, end, uris, unique);
     }
