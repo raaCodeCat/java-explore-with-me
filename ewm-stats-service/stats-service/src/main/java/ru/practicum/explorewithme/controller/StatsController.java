@@ -16,7 +16,7 @@ import ru.practicum.explorewithme.dto.request.StatsRequestFilter;
 import ru.practicum.explorewithme.dto.response.StatsView;
 import ru.practicum.explorewithme.service.StatsService;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
