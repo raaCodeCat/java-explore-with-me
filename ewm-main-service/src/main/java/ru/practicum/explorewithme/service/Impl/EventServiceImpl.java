@@ -14,7 +14,6 @@ import ru.practicum.explorewithme.dto.request.EventFilter;
 import ru.practicum.explorewithme.dto.request.EventUpdateDto;
 import ru.practicum.explorewithme.dto.response.EventShortView;
 import ru.practicum.explorewithme.dto.response.EventView;
-import ru.practicum.explorewithme.enums.AdminEventStateAction;
 import ru.practicum.explorewithme.enums.EventSort;
 import ru.practicum.explorewithme.enums.EventState;
 import ru.practicum.explorewithme.exception.ConflictException;
@@ -344,10 +343,6 @@ public class EventServiceImpl implements EventService {
                     checkEventIsPendingPublishing(eventForUpdate);
                     eventForUpdate.setState(EventState.PUBLISHED);
                     eventForUpdate.setPublishedOn(LocalDateTime.now());
-            }
-            if (updateDto.getStateAction().equals(AdminEventStateAction.REJECT_EVENT)) {
-                checkEventIsNotPublished(eventForUpdate);
-                eventForUpdate.setState(EventState.PUBLISHED);
             }
         }
 
