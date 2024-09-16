@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.interseptor.errorhandler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -70,6 +71,19 @@ public class ErrorHandler {
                 HttpStatus.CONFLICT,
                 exception.getMessage(),
                 exception.getExceptionReason(),
+                List.of(exception.getMessage())
+        );
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ApiError handleDataIntegrityViolationException(DataIntegrityViolationException exception) {
+        log.info("Ошибка 409: {}", exception.getMessage());
+
+        return new ApiError(
+                HttpStatus.CONFLICT,
+                exception.getMessage(),
+                "Нарушено ограничение целостности",
                 List.of(exception.getMessage())
         );
     }

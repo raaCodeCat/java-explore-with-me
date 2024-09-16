@@ -1,6 +1,5 @@
 package ru.practicum.explorewithme.controller;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,7 @@ public class PublicCompilationController {
             @RequestParam(defaultValue = "0")
             @Min(value = 0, message = "Параметр from не может быть меньше {value}") int from,
             @RequestParam(defaultValue = "10")
-            @Min(value = 1, message = "Параметр size не может быть меньше {value}")
-            @Max(value = 100, message = "Параметр size не может быть больше {value}") int size
+            @Min(value = 1, message = "Параметр size не может быть меньше {value}") int size
     ) {
         return compilationService.getCompilations(pinned, from, size);
     }
