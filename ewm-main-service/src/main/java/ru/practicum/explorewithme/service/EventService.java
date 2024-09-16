@@ -7,8 +7,10 @@ import ru.practicum.explorewithme.dto.request.EventFilter;
 import ru.practicum.explorewithme.dto.request.EventUpdateDto;
 import ru.practicum.explorewithme.dto.response.EventShortView;
 import ru.practicum.explorewithme.dto.response.EventView;
+import ru.practicum.explorewithme.model.Event;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Сервис для работы с событиями.
@@ -24,7 +26,9 @@ public interface EventService {
 
     List<EventShortView> getEvents(HttpServletRequest request, EventFilter filter);
 
-    EventShortView getEventById(HttpServletRequest request, Long eventId);
+    EventView getEventById(HttpServletRequest request, Long eventId);
 
     EventView eventUpdateByAdmin(Long eventId, EventUpdateByAdminDto updateDto);
+
+    Map<String, Long> getEventsViewStats(List<Event> events);
 }

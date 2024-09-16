@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.dto.request.EventFilter;
 import ru.practicum.explorewithme.dto.response.EventShortView;
+import ru.practicum.explorewithme.dto.response.EventView;
 import ru.practicum.explorewithme.enums.EventSort;
 import ru.practicum.explorewithme.service.EventService;
 import ru.practicum.explorewithme.util.DateTimeUtil;
@@ -59,7 +60,7 @@ public class PublicEventController {
     }
 
     @GetMapping("/{id}")
-    public EventShortView getEventById(@PathVariable Long id, HttpServletRequest request) {
+    public EventView getEventById(@PathVariable Long id, HttpServletRequest request) {
         log.info("GET /events/{}", id);
 
         return eventService.getEventById(request, id);

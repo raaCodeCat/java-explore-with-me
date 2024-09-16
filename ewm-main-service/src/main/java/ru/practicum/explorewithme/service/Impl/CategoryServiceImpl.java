@@ -3,6 +3,8 @@ package ru.practicum.explorewithme.service.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.dto.request.CategoryCreateDto;
@@ -14,6 +16,9 @@ import ru.practicum.explorewithme.model.Category;
 import ru.practicum.explorewithme.repository.CategoryRepository;
 import ru.practicum.explorewithme.service.CategoryService;
 import ru.practicum.explorewithme.service.EntityGettingService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Сервис для работы с категориями.
@@ -45,6 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryView update(CategoryDto categoryDto) {
         Category categoryForUpdate = entityGettingService.getCategoryById(categoryDto.getId());
         String newCategoryName = categoryDto.getName();
@@ -69,6 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         Category category = entityGettingService.getCategoryById(id);
 
@@ -80,5 +87,20 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (DataIntegrityViolationException e) {
             throw new ConflictException(e.getMostSpecificCause().getMessage());
         }
+    }
+
+    @Override
+    public List<CategoryView> getCategories(int from, int size) {
+        int page = from / size;
+        Pageable pageable = PageRequest.of(page, size);
+
+        return categoryMapper.convert(categoryRepository.findAll(pageable).stream().collect(Collectors.toList()));
+    }
+
+    @Override
+    public CategoryView getCategoryById(Long catId) {
+        Category category = entityGettingService.getCategoryById(catId);
+
+        return categoryMapper.convert(category);
     }
 }

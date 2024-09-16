@@ -18,7 +18,7 @@ public interface EventMapper {
 
     @Mapping(target = "location.lat", source = "event.lat")
     @Mapping(target = "location.lon", source = "event.lon")
-    @Mapping(target = "views", source = "viewCount")
+    @Mapping(target = "views", source = "viewCount", defaultValue = "0L")
     EventView convert(Event event, Long viewCount);
 
     EventShortView convertShort(Event event);

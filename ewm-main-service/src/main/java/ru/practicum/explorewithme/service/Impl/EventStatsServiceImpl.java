@@ -41,6 +41,7 @@ public class EventStatsServiceImpl implements EventStatsService {
         }
     }
 
+    @Override
     public Map<String, Long> getEventsViewStats(LocalDateTime start, LocalDateTime end, List<String> uris) {
         Map<String, Long> eventsViewStats = new HashMap<>();
         for (String uri : uris) {

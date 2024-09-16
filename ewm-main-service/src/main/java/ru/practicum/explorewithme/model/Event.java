@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.model;
 
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "events")
+@EqualsAndHashCode
 public class Event {
     /**
      * Идентификатор.

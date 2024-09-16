@@ -241,7 +241,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventShortView getEventById(HttpServletRequest request, Long eventId) {
+    public EventView getEventById(HttpServletRequest request, Long eventId) {
         Event event = eventRepository.getPublishedEventById(eventId).orElseThrow(() ->
                 new NotFoundException(String.format("Событие с идентификатором %d не найдено", eventId)));
         statsService.saveHit(request, appName);
@@ -252,13 +252,11 @@ public class EventServiceImpl implements EventService {
                 PATH + eventId
         );
 
-        EventShortView eventShortView = eventMapper.convertShort(event);
-        eventShortView.setViews(viewCount);
-
-        return eventShortView;
+        return eventMapper.convert(event, viewCount);
     }
 
-    private Map<String, Long> getEventsViewStats(List<Event> events) {
+    @Override
+    public Map<String, Long> getEventsViewStats(List<Event> events) {
         if (events == null || events.size() == 0) {
             return Map.of();
         }
@@ -277,6 +275,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public EventView eventUpdateByAdmin(Long eventId, EventUpdateByAdminDto updateDto) {
         log.info("Обновление события с идентификатором {} администратором. Новые данные {}",
                 eventId, updateDto);

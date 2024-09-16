@@ -75,7 +75,7 @@ public class EventCreateDto {
     @Schema(description = "Ограничение на количество участников. Значение 0 - означает отсутствие ограничения",
             example = "0")
     @PositiveOrZero
-    private Integer participantLimit;
+    private Integer participantLimit = 0;
 
     /**
      * Признак необходимости пре-модерации заявок на участие.

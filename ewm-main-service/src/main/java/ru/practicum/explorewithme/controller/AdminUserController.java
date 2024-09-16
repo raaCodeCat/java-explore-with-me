@@ -18,7 +18,6 @@ import ru.practicum.explorewithme.dto.response.UserView;
 import ru.practicum.explorewithme.service.UserService;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 
@@ -47,8 +46,7 @@ public class AdminUserController {
             @RequestParam(defaultValue = "0")
             @Min(value = 0, message = "Параметр from не может быть меньше {value}") int from,
             @RequestParam(defaultValue = "10")
-            @Min(value = 1, message = "Параметр size не может быть меньше {value}")
-            @Max(value = 100, message = "Параметр size не может быть больше {value}") int size
+            @Min(value = 1, message = "Параметр size не может быть меньше {value}") int size
     ) {
         log.info("Получен запрос GET /admin/users?ids={}&from={}&size={}", ids, from, size);
 
