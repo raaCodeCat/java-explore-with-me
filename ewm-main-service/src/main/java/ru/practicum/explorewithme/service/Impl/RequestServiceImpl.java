@@ -2,7 +2,6 @@ package ru.practicum.explorewithme.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,14 +61,30 @@ public class RequestServiceImpl implements RequestService {
         requestForCreate.setStatus(status);
         requestForCreate.setCreated(LocalDateTime.now());
 
-        try {
-            Request request = requestRepository.save(requestForCreate);
+        // Почему-то так не проходит тест постмана при пулл реквесте, локально и в докере работает.
+        /*
+            try {
+                Request request = requestRepository.save(requestForCreate);
+                log.info("Заявка на участие в событии создана {}", request);
+
+                return requestMapper.convert(request);
+            }  catch (DataIntegrityViolationException e) {
+                throw new ConflictException(e.getMostSpecificCause().getMessage());
+            }
+         */
+
+        if (requestRepository.findRequestByRequesterIdAndEventId(userId, eventId).isPresent()) {
+            throw new ConflictException(
+                    String.format("Заявка от пользователя с идентификатором %d на участие в событии " +
+                                    "с идентификатором %d уже создана",
+                            userId, eventId)
+            );
+        }
+
+        Request request = requestRepository.save(requestForCreate);
             log.info("Заявка на участие в событии создана {}", request);
 
             return requestMapper.convert(request);
-        }  catch (DataIntegrityViolationException e) {
-            throw new ConflictException(e.getMostSpecificCause().getMessage());
-        }
     }
 
     @Override
@@ -145,9 +160,10 @@ public class RequestServiceImpl implements RequestService {
         for (Request request : requests) {
             if (!request.getStatus().equals(RequestStatus.PENDING)) {
                 throw new ConflictException(
-                        String.format("Невозможно изменить статус заявки с идентификатором %d." +
+                        String.format("Невозможно изменить статус заявки с идентификатором %d. " +
                                 "Статус можно изменить только у заявок, находящихся в состоянии ожидания",
-                                request.getId()));
+                                request.getId()),
+                        "Конфликт при изменении статуса заявки");
             }
 
             if (newStatus.equals(RequestStatus.CONFIRMED)) {
