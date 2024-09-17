@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.explorewithme.dto.request.AdminEventFilter;
 import ru.practicum.explorewithme.dto.request.EventUpdateByAdminDto;
 import ru.practicum.explorewithme.dto.request.EventCreateDto;
 import ru.practicum.explorewithme.dto.request.EventFilter;
@@ -349,6 +350,45 @@ public class EventServiceImpl implements EventService {
         log.info("Событие обновлено");
 
         return eventMapper.convert(event, viewCount);
+    }
+
+    @Override
+    public List<EventView> getEventsForAdmin(AdminEventFilter filter) {
+        List<Long> users = filter.getUsers();
+        List<EventState> states = filter.getStates();
+        List<Long> categories = filter.getCategories();
+        LocalDateTime rangeStart;
+        LocalDateTime rangeEnd;
+        int from = filter.getFrom();
+        int size = filter.getSize();
+
+        int page = from / size;
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (filter.getRangeStart() == null && filter.getRangeEnd() == null) {
+            rangeStart = LocalDateTime.now();
+            rangeEnd = null;
+        } else {
+            rangeStart = filter.getRangeStart();
+            rangeEnd = filter.getRangeEnd();
+        }
+
+        List<Event> events = eventRepository.getEventsByParams(users, states, categories, rangeStart,
+                rangeEnd, pageable);
+
+        if (events.size() == 0) {
+            return List.of();
+        }
+
+        List<EventView> eventViews = eventMapper.convert(events);
+
+        Map<String, Long> stats = getEventsViewStats(events);
+
+        for (EventView eventView : eventViews) {
+            eventView.setViews(stats.getOrDefault(PATH + eventView.getId(), 0L));
+        }
+
+        return eventViews;
     }
 
     private void checkEventData(LocalDateTime eventDate) {

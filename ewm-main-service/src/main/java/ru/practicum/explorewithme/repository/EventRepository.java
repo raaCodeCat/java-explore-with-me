@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ru.practicum.explorewithme.enums.EventState;
 import ru.practicum.explorewithme.model.Event;
 import ru.practicum.explorewithme.model.User;
 
@@ -33,6 +34,26 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("rangeStart") LocalDateTime rangeStart,
             @Param("rangeEnd") LocalDateTime rangeEnd,
             @Param("getOnlyAvailable") Boolean getOnlyAvailable,
+            Pageable pageable
+    );
+
+    @Query(value = "select e " +
+            "from Event e " +
+            "inner join e.category as c " +
+            "inner join e.initiator as u " +
+            "where " +
+            "(u.id in :users or :users is null) " +
+            "and (e.state in :states or :states is null) " +
+            "and (c.id in :categories or :categories is null) " +
+            "and (e.eventDate >= :rangeStart) " +
+            "and (e.eventDate <= :rangeEnd or cast(:rangeEnd as timestamp) is null) " +
+            "")
+    List<Event> getEventsByParams(
+            @Param("users") List<Long> users,
+            @Param("states") List<EventState> states,
+            @Param("categories") List<Long> categories,
+            @Param("rangeStart") LocalDateTime rangeStart,
+            @Param("rangeEnd") LocalDateTime rangeEnd,
             Pageable pageable
     );
 

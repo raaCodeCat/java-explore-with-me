@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import ru.practicum.explorewithme.dto.request.AdminEventFilter;
 import ru.practicum.explorewithme.dto.request.EventUpdateByAdminDto;
 import ru.practicum.explorewithme.dto.request.EventCreateDto;
 import ru.practicum.explorewithme.dto.request.EventFilter;
@@ -29,6 +30,8 @@ public interface EventService {
     EventView getEventById(HttpServletRequest request, Long eventId);
 
     EventView eventUpdateByAdmin(Long eventId, EventUpdateByAdminDto updateDto);
+
+    List<EventView> getEventsForAdmin(AdminEventFilter filter);
 
     Map<String, Long> getEventsViewStats(List<Event> events);
 }
