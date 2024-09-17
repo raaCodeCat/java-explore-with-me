@@ -54,6 +54,4 @@ public class AdminCategoryController {
 
         return categoryService.update(categoryDto);
     }
-
-
 }

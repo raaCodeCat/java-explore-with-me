@@ -15,6 +15,7 @@ import ru.practicum.explorewithme.dto.request.AdminEventFilter;
 import ru.practicum.explorewithme.dto.request.EventUpdateByAdminDto;
 import ru.practicum.explorewithme.dto.response.EventView;
 import ru.practicum.explorewithme.enums.EventState;
+import ru.practicum.explorewithme.exception.BadRequestException;
 import ru.practicum.explorewithme.service.EventService;
 import ru.practicum.explorewithme.util.DateTimeUtil;
 
@@ -49,14 +50,19 @@ public class AdminEventController {
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size
     ) {
+        LocalDateTime startDT = rangeStart != null ? LocalDateTime.parse(rangeStart, DateTimeUtil.formatter) : null;
+        LocalDateTime endDT = rangeEnd != null ? LocalDateTime.parse(rangeEnd, DateTimeUtil.formatter) : null;
+
+        if (startDT != null && endDT != null && endDT.isBefore(startDT)) {
+             throw new BadRequestException("Дата окончания периода должна быть больше даты начала периода");
+        }
+
         AdminEventFilter filter = new AdminEventFilter();
         filter.setUsers(users);
         filter.setStates(states);
         filter.setCategories(categories);
-        filter.setRangeStart(rangeStart != null ?
-                LocalDateTime.parse(rangeStart, DateTimeUtil.formatter) : null);
-        filter.setRangeEnd(rangeEnd != null ?
-                LocalDateTime.parse(rangeEnd, DateTimeUtil.formatter) : null);
+        filter.setRangeStart(startDT);
+        filter.setRangeEnd(endDT);
         filter.setFrom(from);
         filter.setSize(size);
 

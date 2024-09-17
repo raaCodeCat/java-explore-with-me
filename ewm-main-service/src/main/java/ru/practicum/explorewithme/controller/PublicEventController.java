@@ -13,6 +13,7 @@ import ru.practicum.explorewithme.dto.request.EventFilter;
 import ru.practicum.explorewithme.dto.response.EventShortView;
 import ru.practicum.explorewithme.dto.response.EventView;
 import ru.practicum.explorewithme.enums.EventSort;
+import ru.practicum.explorewithme.exception.BadRequestException;
 import ru.practicum.explorewithme.service.EventService;
 import ru.practicum.explorewithme.util.DateTimeUtil;
 
@@ -43,12 +44,19 @@ public class PublicEventController {
             @RequestParam(defaultValue = "0") Integer from,
             @RequestParam(defaultValue = "10") Integer size,
             HttpServletRequest request) {
+        LocalDateTime startDT = rangeStart != null ? LocalDateTime.parse(rangeStart, DateTimeUtil.formatter) : null;
+        LocalDateTime endDT = rangeEnd != null ? LocalDateTime.parse(rangeEnd, DateTimeUtil.formatter) : null;
+
+        if (startDT != null && endDT != null && endDT.isBefore(startDT)) {
+            throw new BadRequestException("Дата окончания периода должна быть больше даты начала периода");
+        }
+
         EventFilter filter = new EventFilter();
         filter.setText(text);
         filter.setCategories(categories);
         filter.setPaid(paid);
-        filter.setRangeStart(rangeStart != null ? LocalDateTime.parse(rangeStart, DateTimeUtil.formatter) : null);
-        filter.setRangeEnd(rangeEnd != null ? LocalDateTime.parse(rangeEnd, DateTimeUtil.formatter) : null);
+        filter.setRangeStart(startDT);
+        filter.setRangeEnd(endDT);
         filter.setOnlyAvailable(onlyAvailable);
         filter.setSort(sort);
         filter.setFrom(from);

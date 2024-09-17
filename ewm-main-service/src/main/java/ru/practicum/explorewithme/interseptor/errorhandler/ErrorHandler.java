@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.practicum.explorewithme.dto.response.ApiError;
+import ru.practicum.explorewithme.exception.BadRequestException;
 import ru.practicum.explorewithme.exception.ConflictException;
 import ru.practicum.explorewithme.exception.DateTimeDeserializerException;
 import ru.practicum.explorewithme.exception.NotFoundException;
@@ -39,6 +40,19 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DateTimeDeserializerException.class)
     public ApiError handleLocalDateTimeDeserializerExceptions(DateTimeDeserializerException exception) {
+        log.info("Ошибка 400: {}", exception.getMessage());
+
+        return new ApiError(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                exception.getExceptionReason(),
+                List.of(exception.getMessage())
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadRequestException.class)
+    public ApiError handleBadRequestExceptions(BadRequestException exception) {
         log.info("Ошибка 400: {}", exception.getMessage());
 
         return new ApiError(
