@@ -2,7 +2,7 @@ package ru.practicum.explorewithme.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.dto.request.EventRequestStatusUpdateDto;
@@ -61,30 +61,14 @@ public class RequestServiceImpl implements RequestService {
         requestForCreate.setStatus(status);
         requestForCreate.setCreated(LocalDateTime.now());
 
-        // Почему-то так не проходит тест постмана при пулл реквесте, локально и в докере работает.
-        /*
-            try {
-                Request request = requestRepository.save(requestForCreate);
-                log.info("Заявка на участие в событии создана {}", request);
-
-                return requestMapper.convert(request);
-            }  catch (DataIntegrityViolationException e) {
-                throw new ConflictException(e.getMostSpecificCause().getMessage());
-            }
-         */
-
-        if (requestRepository.findRequestByRequesterIdAndEventId(userId, eventId).isPresent()) {
-            throw new ConflictException(
-                    String.format("Заявка от пользователя с идентификатором %d на участие в событии " +
-                                    "с идентификатором %d уже создана",
-                            userId, eventId)
-            );
-        }
-
-        Request request = requestRepository.save(requestForCreate);
+        try {
+            Request request = requestRepository.save(requestForCreate);
             log.info("Заявка на участие в событии создана {}", request);
 
             return requestMapper.convert(request);
+        }  catch (DataIntegrityViolationException e) {
+            throw new ConflictException(e.getMostSpecificCause().getMessage());
+        }
     }
 
     @Override
@@ -216,13 +200,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     private Long getCountConfirmedRequestByEventId(Long eventId) {
-        Request request = new Request();
-        Event event = new Event();
-        event.setId(eventId);
-        request.setEvent(event);
-        request.setStatus(RequestStatus.CONFIRMED);
-
-        return requestRepository.count(Example.of(request));
+        return requestRepository.getCountConfirmedRequestByEventId(eventId);
     }
 
     private void checkUserIsInitiatorOfEvent(User user, Event event) {
