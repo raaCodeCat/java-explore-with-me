@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.dto.request.HitCreateDto;
 import ru.practicum.explorewithme.dto.request.StatsRequestFilter;
 import ru.practicum.explorewithme.dto.response.StatsView;
+import ru.practicum.explorewithme.exeption.BadRequestException;
 import ru.practicum.explorewithme.service.StatsService;
 
 import jakarta.validation.constraints.Pattern;
@@ -49,6 +50,10 @@ public class StatsController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startDT = LocalDateTime.parse(start, formatter);
         LocalDateTime endDT = LocalDateTime.parse(end, formatter);
+
+        if (endDT.isBefore(startDT)) {
+            throw new BadRequestException("Дата окончания периода должна быть больше даты начала периода");
+        }
 
         StatsRequestFilter params = new StatsRequestFilter(startDT, endDT, uris, unique);
         log.info("GET /stats with params = {}", params);
