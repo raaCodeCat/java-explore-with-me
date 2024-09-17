@@ -143,4 +143,10 @@ public class Event {
      */
     @Formula("(select count(*) from requests r where r.event_id = event_id and r.request_status = 'CONFIRMED')")
     private long confirmedRequests;
+
+    /**
+     * Количество комментариев.
+     */
+    @Formula("(select count(*) from comments c where c.event_id = event_id)")
+    private Long commentsCount = 0L;
 }
