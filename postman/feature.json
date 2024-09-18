@@ -153,12 +153,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test('Has property \"', function () {\r",
+							"pm.test('Has property \"commentsCount\"', function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('commentsCount');\r",
 							"    \r",
 							"});\r",
-							"pm.test('Property \"likeCount\" equal 0', function () {\r",
+							"pm.test('Property \"commentsCount\" equal 0', function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.commentsCount, '\"commentsCount\" must be 0').to.eql(0);\r",
 							"});"
@@ -423,7 +423,7 @@
 						}
 					}
 				},
-				"url": "http://localhost:8080/comments/events/1000"
+				"url": "http://localhost:8080/comments/events/1596547"
 			},
 			"response": []
 		},
@@ -452,7 +452,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 1000,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
+					"raw": "{\r\n    \"author\" : 1596547,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -470,12 +470,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test('Has property \"', function () {\r",
+							"pm.test('Has property \"commentsCount\"', function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData).to.have.property('commentsCount');\r",
 							"    \r",
 							"});\r",
-							"pm.test('Property \"likeCount\" equal 1', function () {\r",
+							"pm.test('Property \"commentsCount\" equal 1', function () {\r",
 							"    var jsonData = pm.response.json();\r",
 							"    pm.expect(jsonData.commentsCount, '\"commentsCount\" must be 1').to.eql(1);\r",
 							"});"
@@ -512,21 +512,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": "http://localhost:8080/comments/1"
 			},
 			"response": []
@@ -551,21 +539,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": "http://localhost:8080/comments/1000"
 			},
 			"response": []
@@ -626,21 +602,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?from=0&size=100",
 					"protocol": "http",
@@ -691,21 +655,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?from=0&size=1",
 					"protocol": "http",
@@ -752,23 +704,11 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "http://localhost:8080/comments/events/100?from=0&size=100",
+					"raw": "http://localhost:8080/comments/events/1596547?from=0&size=100",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -777,7 +717,7 @@
 					"path": [
 						"comments",
 						"events",
-						"100"
+						"1596547"
 					],
 					"query": [
 						{
@@ -813,21 +753,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?size=100",
 					"protocol": "http",
@@ -870,21 +798,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?size=100&from=-1",
 					"protocol": "http",
@@ -931,21 +847,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?size=-1&from=0",
 					"protocol": "http",
@@ -992,21 +896,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/events/1?from=0",
 					"protocol": "http",
@@ -1052,7 +944,7 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "http://localhost:8080/comments/3/users/100/like"
+				"url": "http://localhost:8080/comments/3/users/1596547/like"
 			},
 			"response": []
 		},
@@ -1106,7 +998,7 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "http://localhost:8080/comments/3/users/100/dislike"
+				"url": "http://localhost:8080/comments/3/users/1596547/dislike"
 			},
 			"response": []
 		},
@@ -1252,21 +1144,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": "http://localhost:8080/comments/3"
 			},
 			"response": []
@@ -1332,21 +1212,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": "http://localhost:8080/comments/3"
 			},
 			"response": []
@@ -1431,21 +1299,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": "http://localhost:8080/comments/3"
 			},
 			"response": []
@@ -1524,21 +1380,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/users/3?size=100",
 					"protocol": "http",
@@ -1581,21 +1425,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/users/3?from=-1&size=100",
 					"protocol": "http",
@@ -1642,21 +1474,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/users/3?from=0",
 					"protocol": "http",
@@ -1699,21 +1519,9 @@
 					}
 				}
 			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"author\" : 2,\r\n    \"event\" : 1,\r\n    \"body\": \"Вот такой вот комментарий\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "http://localhost:8080/comments/users/3?from=0&size=-1",
 					"protocol": "http",
