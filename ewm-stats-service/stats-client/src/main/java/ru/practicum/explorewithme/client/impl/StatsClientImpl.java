@@ -1,29 +1,33 @@
 package ru.practicum.explorewithme.client.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import ru.practicum.explorewithme.client.StatsClient;
 import ru.practicum.explorewithme.dto.request.HitCreateDto;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import ru.practicum.explorewithme.dto.response.StatsView;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
-public class StatsClientImpl extends RestTemplate implements StatsClient {
+@RequiredArgsConstructor
+public class StatsClientImpl implements StatsClient {
     @Value("${ewm.stats.service.url}")
     private String statsServiceUrl;
 
+    private final WebClient webClient;
+
     @Override
-    @Transactional
     public void saveHit(HttpServletRequest request, String appName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String ip = request.getRemoteAddr();
@@ -32,40 +36,30 @@ public class StatsClientImpl extends RestTemplate implements StatsClient {
 
         HitCreateDto hitCreateDto = new HitCreateDto(appName, uri, ip, timestamp);
 
-        log.info("Отправлен запрос POST {}/hit с телом {}", statsServiceUrl, hitCreateDto);
+        webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/hit")
+                        .build())
+                .body(Mono.just(hitCreateDto), HitCreateDto.class)
+                .retrieve().bodyToMono(String.class).block();
 
-        postForLocation(statsServiceUrl + "/hit", hitCreateDto);
+        log.info("Отправлен запрос POST {}/hit с телом {}", statsServiceUrl, hitCreateDto);
     }
 
     @Override
-    public ResponseEntity<Object> getStats(String start, String end, List<String> uris, Boolean unique) {
-        StringBuilder paramsUrl = new StringBuilder();
-        Map<String, Object> params = new HashMap<>();
-
-        if (start != null) {
-            paramsUrl.append("&start={start}");
-            params.put("start", start);
-        }
-
-        if (end != null) {
-            paramsUrl.append("&end={end}");
-            params.put("end", end);
-        }
-
-        if (uris != null) {
-            paramsUrl.append("&uris={uris}");
-            params.put("uris", uris.toArray());
-        }
-
-        if (unique != null) {
-            paramsUrl.append("&unique={unique}");
-            params.put("unique", unique);
-        }
-
-        String url = statsServiceUrl + "/stats?" + (paramsUrl.toString().length() > 0 ? paramsUrl.substring(1) : "");
-
-        log.info("Отправлен запрос GET {} с параметрами {}", url, params);
-
-        return getForEntity(url, Object.class, params);
+    public List<StatsView> getStats(String start, String end, List<String> uris, Boolean unique) {
+        return webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/stats")
+                        .queryParam("start", start)
+                        .queryParam("end", end)
+                        .queryParam("uris", String.join(",", uris))
+                        .queryParam("unique", unique)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<StatsView>>() {})
+                .block();
     }
 }
