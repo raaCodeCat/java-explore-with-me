@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("comments")
 @RequiredArgsConstructor
+@Validated
 public class CommentController {
     private final CommentService commentService;
 
@@ -45,7 +47,7 @@ public class CommentController {
      * Получение комментария по идентификатору.
      */
     @GetMapping("/{commentId}")
-    CommentShortView getCommentById(@PathVariable Long commentId) {
+    public CommentShortView getCommentById(@PathVariable Long commentId) {
         return commentService.getCommentById(commentId);
     }
 
@@ -53,7 +55,7 @@ public class CommentController {
      * Получение комментариев события.
      */
     @GetMapping("/events/{eventId}")
-    List<CommentShortView> getEventComments(
+    public List<CommentShortView> getEventComments(
             @PathVariable Long eventId,
             @RequestParam
             @Min(value = 0, message = "Параметр from не может быть меньше {value}") int from,

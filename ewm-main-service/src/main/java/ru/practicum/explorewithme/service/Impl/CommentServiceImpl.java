@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithme.dto.request.CommentCreateDto;
 import ru.practicum.explorewithme.dto.response.CommentShortView;
 import ru.practicum.explorewithme.dto.response.CommentView;
@@ -41,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
 
     @Override
+    @Transactional
     public CommentShortView createComment(Long eventId, CommentCreateDto createDto) {
         log.info("Добавление комментария {}", createDto);
         Event event = entityGettingService.getEventById(eventId);
@@ -96,6 +98,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteCommentById(Long commentId, Long userId) {
         log.info("Удаление комментария с идентификатором {} пользователем с идентификатором {}",
                 commentId, userId);
@@ -114,6 +117,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public String addReactionToComment(Long commentId, Long userId, ReactionType reactionType) {
         log.info("Добавление/изменение реакции на комментарий с идентификатором {} пользователем " +
                         "с идентификатором {}. Тип реакции {}",
@@ -149,6 +153,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteReactionFromComment(Long commentId, Long userId) {
         log.info("Удаление реакции на комментарий {} пользователем {}",
                 commentId, userId);
