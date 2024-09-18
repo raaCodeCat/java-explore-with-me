@@ -72,4 +72,10 @@ public class EventShortView {
      */
     @Schema(description = "Количество просмотрев события", example = "100")
     private Long views;
+
+    /**
+     * Количество комментариев.
+     */
+    @Schema(description = "Количество комментариев", example = "100")
+    private Long commentsCount;
 }

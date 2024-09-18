@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.exception.NotFoundException;
 import ru.practicum.explorewithme.model.Category;
+import ru.practicum.explorewithme.model.Comment;
 import ru.practicum.explorewithme.model.Compilation;
 import ru.practicum.explorewithme.model.Event;
 import ru.practicum.explorewithme.model.Request;
 import ru.practicum.explorewithme.model.User;
 import ru.practicum.explorewithme.repository.CategoryRepository;
+import ru.practicum.explorewithme.repository.CommentRepository;
 import ru.practicum.explorewithme.repository.CompilationRepository;
 import ru.practicum.explorewithme.repository.EventRepository;
 import ru.practicum.explorewithme.repository.RequestRepository;
@@ -33,25 +35,32 @@ public class EntityGettingServiceImpl implements EntityGettingService {
 
     private final CompilationRepository compilationRepository;
 
+    private final CommentRepository commentRepository;
+
+    @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Пользователь с идентификатором %d не найден", id)));
     }
 
+    @Override
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Категория с идентификатором %d не найден", id)));
     }
 
+    @Override
     public Event getEventById(Long id) {
         return eventRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Событие с идентификатором %d не найдено", id)));
     }
 
+    @Override
     public List<Event> getEventsByIds(List<Long> ids) {
         return eventRepository.findAllById(ids);
     }
 
+    @Override
     public Request getRequestById(Long id) {
         return requestRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Заявка с идентификатором %d не найдено", id)));
@@ -61,5 +70,11 @@ public class EntityGettingServiceImpl implements EntityGettingService {
     public Compilation getCompilationById(Long id) {
         return compilationRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Подборка событий с идентификатором %d не найдено", id)));
+    }
+
+    @Override
+    public Comment getCommentById(Long id) {
+        return commentRepository.findById(id).orElseThrow(() ->
+                new NotFoundException(String.format("Комментарий с идентификатором %d не найден", id)));
     }
 }

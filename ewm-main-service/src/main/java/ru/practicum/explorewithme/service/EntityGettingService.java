@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.service;
 
 import ru.practicum.explorewithme.model.Category;
+import ru.practicum.explorewithme.model.Comment;
 import ru.practicum.explorewithme.model.Compilation;
 import ru.practicum.explorewithme.model.Event;
 import ru.practicum.explorewithme.model.Request;
@@ -23,4 +24,6 @@ public interface EntityGettingService {
     Request getRequestById(Long id);
 
     Compilation getCompilationById(Long id);
+
+    Comment getCommentById(Long id);
 }
