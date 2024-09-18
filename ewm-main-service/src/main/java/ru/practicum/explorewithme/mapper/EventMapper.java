@@ -3,6 +3,7 @@ package ru.practicum.explorewithme.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.explorewithme.dto.request.EventCreateDto;
+import ru.practicum.explorewithme.dto.response.EventForCommentView;
 import ru.practicum.explorewithme.dto.response.EventShortView;
 import ru.practicum.explorewithme.dto.response.EventView;
 import ru.practicum.explorewithme.model.Event;
@@ -31,4 +32,6 @@ public interface EventMapper {
 
     @Mapping(target = "id", source = "eventId")
     Event convert(Long eventId);
+
+    EventForCommentView convertForComment(Event event);
 }

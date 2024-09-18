@@ -10,15 +10,15 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 /**
- * Краткая информация о комментарий к событию.
+ * Комментарий к событию.
  */
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Краткая информация о комментарий к событию")
-public class CommentShortView {
+@Schema(description = "Комментарий к событию")
+public class CommentView {
     /**
      * Идентификатор комментария.
      */
@@ -42,6 +42,12 @@ public class CommentShortView {
      */
     @Schema(description = "Дата создания комментария")
     private LocalDateTime created;
+
+    /**
+     * Краткая информация о событии, на которое добавлен комментарий.
+     */
+    @Schema(description = "Краткая информация о событии, на которое добавлен комментарий")
+    private EventForCommentView event;
 
     /**
      * Реакции на комментарий.

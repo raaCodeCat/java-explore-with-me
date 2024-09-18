@@ -42,7 +42,7 @@ public class CommentReaction {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
-    private Event comment;
+    private Comment comment;
 
     /**
      * Пользователь, поставивший реакцию.

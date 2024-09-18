@@ -9,6 +9,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.practicum.explorewithme.dto.response.ApiError;
 import ru.practicum.explorewithme.exception.BadRequestException;
@@ -27,6 +28,19 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ApiError handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+        log.info("Ошибка 400: {}", exception.getMessage());
+
+        return new ApiError(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage(),
+                "Ошибка при валидации входящих параметров",
+                List.of(exception.getMessage())
+        );
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ApiError handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
         log.info("Ошибка 400: {}", exception.getMessage());
 
         return new ApiError(

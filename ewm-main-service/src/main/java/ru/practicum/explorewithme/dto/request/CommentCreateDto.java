@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,16 +28,9 @@ public class CommentCreateDto {
     private Long author;
 
     /**
-     * Идентификатор события, к которому написан комментарий.
-     */
-    @NotNull(message = "Параметр не может быть пустым")
-    @Schema(description = "Идентификатор события, к которому написан комментарий", example = "1")
-    private Long event;
-
-    /**
      * Текст комментария.
      */
-    @NotNull(message = "Параметр не может быть пустым")
+    @NotBlank(message = "Параметр не может быть пустым")
     @Length(min = 1, max = 300, message = "Параметр должен быть длинной от {min} до {max} символов")
     @Schema(description = "Текст комментария", example = "Событие интересное, но далеко ехать")
     private String body;
